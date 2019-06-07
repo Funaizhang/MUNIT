@@ -30,9 +30,12 @@ parser.add_argument('--trainer', type=str, default='MUNIT', help="MUNIT|UNIT")
 opts = parser.parse_args()
 
 
+device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
+n_gpu = torch.cuda.device_count()
 
 torch.manual_seed(opts.seed)
-torch.cuda.manual_seed(opts.seed)
+if device == "cuda":
+    torch.cuda.manual_seed(opts.seed)
 if not os.path.exists(opts.output_folder):
     os.makedirs(opts.output_folder)
 
